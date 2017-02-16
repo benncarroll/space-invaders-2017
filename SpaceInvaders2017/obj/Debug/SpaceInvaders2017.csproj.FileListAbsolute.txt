@@ -1,0 +1,10 @@
+C:\Users\p.howse\AppData\Local\Temporary Projects\SpaceInvaders2017\bin\Debug\SpaceInvaders2017.exe.config
+\\mac\home\Documents\Visual Studio 2015\Projects\SpaceInvaders2017\SpaceInvaders2017\bin\Debug\SpaceInvaders2017.exe.config
+\\mac\home\Documents\Visual Studio 2015\Projects\SpaceInvaders2017\SpaceInvaders2017\bin\Debug\SpaceInvaders2017.exe
+\\mac\home\Documents\Visual Studio 2015\Projects\SpaceInvaders2017\SpaceInvaders2017\bin\Debug\SpaceInvaders2017.pdb
+\\mac\home\Documents\Visual Studio 2015\Projects\SpaceInvaders2017\SpaceInvaders2017\obj\Debug\SpaceInvaders2017.csprojResolveAssemblyReference.cache
+\\mac\home\Documents\Visual Studio 2015\Projects\SpaceInvaders2017\SpaceInvaders2017\obj\Debug\SpaceInvaders2017.Form1.resources
+\\mac\home\Documents\Visual Studio 2015\Projects\SpaceInvaders2017\SpaceInvaders2017\obj\Debug\SpaceInvaders2017.Properties.Resources.resources
+\\mac\home\Documents\Visual Studio 2015\Projects\SpaceInvaders2017\SpaceInvaders2017\obj\Debug\SpaceInvaders2017.csproj.GenerateResource.Cache
+\\mac\home\Documents\Visual Studio 2015\Projects\SpaceInvaders2017\SpaceInvaders2017\obj\Debug\SpaceInvaders2017.exe
+\\mac\home\Documents\Visual Studio 2015\Projects\SpaceInvaders2017\SpaceInvaders2017\obj\Debug\SpaceInvaders2017.pdb
