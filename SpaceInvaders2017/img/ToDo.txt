@@ -1,0 +1,9 @@
+﻿ToDo:
+
+1. Ship /Health
+2. POWERUPS! 
+	ideas:
+		machine gun (rapid fire)
+		fast bullet (long, quick)
+		health boost
+3.

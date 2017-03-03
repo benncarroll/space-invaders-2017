@@ -96,6 +96,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -122,6 +123,26 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="img\starssmall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="img\starsmedium.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="img\alien.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="img\ship.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="img\logo.png" />
+    <Content Include="img\ToDo.txt" />
+    <None Include="Resources\logo.bmp" />
+    <None Include="sound\shoot.wav" />
+    <None Include="sound\hit.wav" />
+    <None Include="sound\death.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

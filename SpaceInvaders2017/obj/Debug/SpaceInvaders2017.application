@@ -14,14 +14,14 @@
     <framework targetVersion="4.5.2" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
-    <dependentAssembly dependencyType="install" codebase="SpaceInvaders2017.exe.manifest" size="3512">
+    <dependentAssembly dependencyType="install" codebase="SpaceInvaders2017.exe.manifest" size="3902">
       <assemblyIdentity name="SpaceInvaders2017.exe" version="1.0.0.0" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>srrMGyPzes3brMPRUQpkeG/mG6PvFehq329m/z/KiEI=</dsig:DigestValue>
+        <dsig:DigestValue>zTLasXY01EYkV4dRe5rsGzjnao/V1YfpNX2zQuHMfGI=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
