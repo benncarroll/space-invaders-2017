@@ -42,9 +42,12 @@
             this.tmrLogoAnimation = new System.Windows.Forms.Timer(this.components);
             this.tmrWindowAnimation = new System.Windows.Forms.Timer(this.components);
             this.tmrFireRate = new System.Windows.Forms.Timer(this.components);
-            this.beginnerButton = new System.Windows.Forms.Button();
-            this.expertButton = new System.Windows.Forms.Button();
+            this.buttonBeginner = new System.Windows.Forms.Button();
+            this.buttonExpert = new System.Windows.Forms.Button();
+            this.screenFlashBox = new System.Windows.Forms.PictureBox();
+            this.tmrScreenFlash = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.logoBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.screenFlashBox)).BeginInit();
             this.SuspendLayout();
             // 
             // tmrPowerUp
@@ -136,35 +139,53 @@
             this.tmrFireRate.Interval = 500;
             this.tmrFireRate.Tick += new System.EventHandler(this.tmrFireRate_Tick);
             // 
-            // beginnerButton
+            // buttonBeginner
             // 
-            this.beginnerButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.beginnerButton.BackColor = System.Drawing.Color.Black;
-            this.beginnerButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.beginnerButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.beginnerButton.Location = new System.Drawing.Point(264, 495);
-            this.beginnerButton.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.beginnerButton.Name = "beginnerButton";
-            this.beginnerButton.Size = new System.Drawing.Size(101, 38);
-            this.beginnerButton.TabIndex = 3;
-            this.beginnerButton.Text = "Beginner";
-            this.beginnerButton.UseVisualStyleBackColor = false;
-            this.beginnerButton.Click += new System.EventHandler(this.beginnerButton_Click);
+            this.buttonBeginner.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.buttonBeginner.BackColor = System.Drawing.Color.Black;
+            this.buttonBeginner.Enabled = false;
+            this.buttonBeginner.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonBeginner.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.buttonBeginner.Location = new System.Drawing.Point(264, 495);
+            this.buttonBeginner.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.buttonBeginner.Name = "buttonBeginner";
+            this.buttonBeginner.Size = new System.Drawing.Size(101, 38);
+            this.buttonBeginner.TabIndex = 3;
+            this.buttonBeginner.Text = "Beginner";
+            this.buttonBeginner.UseVisualStyleBackColor = false;
+            this.buttonBeginner.Click += new System.EventHandler(this.buttonBeginner_Click);
             // 
-            // expertButton
+            // buttonExpert
             // 
-            this.expertButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.expertButton.BackColor = System.Drawing.Color.Black;
-            this.expertButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.expertButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.expertButton.Location = new System.Drawing.Point(410, 495);
-            this.expertButton.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.expertButton.Name = "expertButton";
-            this.expertButton.Size = new System.Drawing.Size(101, 38);
-            this.expertButton.TabIndex = 4;
-            this.expertButton.Text = "Expert";
-            this.expertButton.UseVisualStyleBackColor = false;
-            this.expertButton.Click += new System.EventHandler(this.expertButton_Click);
+            this.buttonExpert.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.buttonExpert.BackColor = System.Drawing.Color.Black;
+            this.buttonExpert.Enabled = false;
+            this.buttonExpert.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonExpert.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.buttonExpert.Location = new System.Drawing.Point(410, 495);
+            this.buttonExpert.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.buttonExpert.Name = "buttonExpert";
+            this.buttonExpert.Size = new System.Drawing.Size(101, 38);
+            this.buttonExpert.TabIndex = 4;
+            this.buttonExpert.Text = "Expert";
+            this.buttonExpert.UseVisualStyleBackColor = false;
+            this.buttonExpert.Click += new System.EventHandler(this.buttonExpert_Click);
+            // 
+            // screenFlashBox
+            // 
+            this.screenFlashBox.BackColor = System.Drawing.Color.Transparent;
+            this.screenFlashBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.screenFlashBox.Location = new System.Drawing.Point(0, 0);
+            this.screenFlashBox.Name = "screenFlashBox";
+            this.screenFlashBox.Size = new System.Drawing.Size(745, 0);
+            this.screenFlashBox.TabIndex = 5;
+            this.screenFlashBox.TabStop = false;
+            this.screenFlashBox.Visible = false;
+            // 
+            // tmrScreenFlash
+            // 
+            this.tmrScreenFlash.Interval = 50;
+            this.tmrScreenFlash.Tick += new System.EventHandler(this.tmrScreenFlash_Tick);
             // 
             // Form1
             // 
@@ -173,8 +194,9 @@
             this.BackColor = System.Drawing.Color.Black;
             this.BackgroundImage = global::SpaceInvaders2017.Properties.Resources.starsmedium;
             this.ClientSize = new System.Drawing.Size(784, 0);
-            this.Controls.Add(this.expertButton);
-            this.Controls.Add(this.beginnerButton);
+            this.Controls.Add(this.screenFlashBox);
+            this.Controls.Add(this.buttonExpert);
+            this.Controls.Add(this.buttonBeginner);
             this.Controls.Add(this.logoBox);
             this.Controls.Add(this.debugText);
             this.Controls.Add(this.displayText);
@@ -187,6 +209,7 @@
             this.Text = "Space Invaders!";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.logoBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.screenFlashBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -194,6 +217,7 @@
 
         #endregion
 
+        private System.Windows.Forms.PictureBox screenFlashBox;
         private System.Windows.Forms.Timer tmrPowerUp;
         private System.Windows.Forms.Timer tmrSlow;
         private System.Windows.Forms.Label displayText;
@@ -206,8 +230,9 @@
         private System.Windows.Forms.Timer tmrLogoAnimation;
         private System.Windows.Forms.Timer tmrWindowAnimation;
         private System.Windows.Forms.Timer tmrFireRate;
-        private System.Windows.Forms.Button beginnerButton;
-        private System.Windows.Forms.Button expertButton;
+        private System.Windows.Forms.Button buttonBeginner;
+        private System.Windows.Forms.Button buttonExpert;
+        private System.Windows.Forms.Timer tmrScreenFlash;
     }
 }
 

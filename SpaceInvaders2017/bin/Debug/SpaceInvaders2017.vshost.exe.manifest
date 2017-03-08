@@ -42,24 +42,24 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="SpaceInvaders2017.exe" size="112128">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="SpaceInvaders2017.exe" size="126464">
       <assemblyIdentity name="SpaceInvaders2017" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>m5BWLkzzll2Lo6o2/BX1oDNGZO2azp3q/Ofj3Z1D9S4=</dsig:DigestValue>
+        <dsig:DigestValue>130JAIXXv20DiFggYovN0zKVtsnsjxNdt+l1hDt2WRo=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
-  <file name="img\ToDo.txt" size="128">
+  <file name="img\ToDo.txt" size="199">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>GhviBqDyUA2WjyDaBYb1Q0sZyFzy3v7M6bI1qh91v7k=</dsig:DigestValue>
+      <dsig:DigestValue>R6/IDymE3VCCqu9ERPpbFd2kWR+uzlJIDY8nTbqcQ20=</dsig:DigestValue>
     </hash>
   </file>
   <file name="SpaceInvaders2017.exe.config" size="189">

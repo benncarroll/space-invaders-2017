@@ -1,9 +1,10 @@
 ﻿ToDo:
 
-1. Ship /Health
+1. -------------------------Health Bar
 2. POWERUPS! 
 	ideas:
 		machine gun (rapid fire)
 		fast bullet (long, quick)
 		health boost
-3.
+3. Alien  move down 3 hit wall etc bug
+4. shields

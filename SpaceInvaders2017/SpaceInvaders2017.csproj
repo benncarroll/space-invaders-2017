@@ -137,7 +137,10 @@
     <None Include="img\ship.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\saucer2b.ico" />
     <None Include="img\logo.png" />
+    <None Include="img\baseshipb.ico" />
+    <None Include="img\saucer2b.ico" />
     <Content Include="img\ToDo.txt" />
     <None Include="Resources\logo.bmp" />
     <None Include="sound\shoot.wav" />

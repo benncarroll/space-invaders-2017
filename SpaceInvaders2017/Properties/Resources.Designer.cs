@@ -71,6 +71,16 @@ namespace SpaceInvaders2017.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon baseshipb {
+            get {
+                object obj = ResourceManager.GetObject("baseshipb", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
         internal static System.IO.UnmanagedMemoryStream death {
@@ -95,6 +105,16 @@ namespace SpaceInvaders2017.Properties {
             get {
                 object obj = ResourceManager.GetObject("logo", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon saucer2b {
+            get {
+                object obj = ResourceManager.GetObject("saucer2b", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
             }
         }
         
