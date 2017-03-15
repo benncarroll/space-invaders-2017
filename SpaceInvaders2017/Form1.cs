@@ -32,6 +32,7 @@ namespace SpaceInvaders2017
         bool allowFire = true;
         bool hitSideLeft = true;
         bool hitSideRight = false;
+        bool noWaveDupe = false;
 
         int playerHealth = 5;
         int playerAllowedHealth = 5;
@@ -58,6 +59,8 @@ namespace SpaceInvaders2017
             InitializeComponent();
             this.Click += Form1_Click;
             this.KeyPress += Form1_KeyPress;
+            this.KeyDown += Form1_KeyDown;
+            this.KeyUp += Form1_KeyUp;
         }
 
         // Is called when any alphanumeric key pressed, and checks it against a number
@@ -70,45 +73,58 @@ namespace SpaceInvaders2017
                 allowFire = false;
             }
 
-            if (e.KeyChar.ToString() == "n" && finished && !playerdied && started)
+            if (e.KeyChar.ToString() == "n" || e.KeyChar.ToString() == "N" && finished && !playerdied && started)
             {
                 newWave();
             }
-            if (e.KeyChar.ToString() == "r" && finished && playerdied && started)
+            if (e.KeyChar.ToString() == "r" || e.KeyChar.ToString() == "R" && finished && playerdied && started)
             {
                 newWave();
                 playerdied = false;
             }
-            if (e.KeyChar.ToString() == "o")
+            if (e.KeyChar.ToString() == "o" || e.KeyChar.ToString() == "O")
             {
                 toggleDebug();
                 shootAtShip(1);
             }
-            if (e.KeyChar.ToString() == "q")
+            if (e.KeyChar.ToString() == "q" || e.KeyChar.ToString() == "Q")
             {
                 this.Height = 800;
                 this.Width = 1000;
             }
 
         }
-
-        // Is called when system keys are pressed, and is used to
-        // process arrow keys to move the ship.
-        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            if (keyData == Keys.Left)
+            if (e.KeyCode == Keys.Left)
             {
-                shipDir = -10;
+                if (shipDir > -30 && shipDir < -9)
+                {
+                    shipDir += -10;
+                } else if (shipDir > 20) {
+                } else {
+                    shipDir = -10;
+                }
             }
-            else if (keyData == Keys.Right)
+            else if (e.KeyCode == Keys.Right)
             {
-                shipDir = 10;
+                if (shipDir < 30 && shipDir > 9)
+                {
+                    shipDir += 10;
+                }
+                else if (shipDir > 20)
+                {
+                }
+                else
+                {
+                    shipDir = 10;
+                }
             }
-            else if (keyData == Keys.Down)
-            {
-                shipDir = 0;
-            }
-            return base.ProcessCmdKey(ref msg, keyData);
+
+        }
+        private void Form1_KeyUp(object sender, KeyEventArgs e)
+        {
+            shipDir = 0;
         }
 
         // This function is called on load, and is used to generate a ship
@@ -150,26 +166,30 @@ namespace SpaceInvaders2017
         // starts the timers and spawns the aliens and ship.
         private void startGame()
         {
-            started = true;
-            // Generates ship and makes it a global variable to be called in other functions
-            createShip();
-            ship = (PictureBox)Controls["ship"];
-            playerHealthBar = (PictureBox)Controls["playerHealthBar"];
-            createAliens(3, 10);
-            hideText();
-            playerHealth = playerAllowedHealth;
-            tmrLogoAnimation.Enabled = true;
-            tmrFast.Enabled = true;
-            tmrSlow.Enabled = true;
-            tmrPowerUp.Enabled = true;
-            tmrMove.Enabled = true;
-
+            if (!noWaveDupe)
+            {
+                started = true;
+                noWaveDupe = true;
+                // Generates ship and makes it a global variable to be called in other functions
+                createShip();
+                ship = (PictureBox)Controls["ship"];
+                playerHealthBar = (PictureBox)Controls["playerHealthBar"];
+                createAliens(3, 10);
+                hideText();
+                playerHealth = playerAllowedHealth;
+                tmrLogoAnimation.Enabled = true;
+                tmrFast.Enabled = true;
+                tmrSlow.Enabled = true;
+                tmrPowerUp.Enabled = true;
+                tmrMove.Enabled = true;
+            }
         }
 
         // This function calls a new wave of aliens after the user has 
         // completed a level.
         private void newWave()
         {
+
             // Disables text
             hideText();
             tmrFast.Interval = 30;
@@ -385,6 +405,8 @@ namespace SpaceInvaders2017
         {
             moveShip();
             moveBullet();
+            checkHits();
+            deleteDead();
 
         }
         private void tmrPowerUp_Tick(object sender, EventArgs e)
@@ -411,7 +433,7 @@ namespace SpaceInvaders2017
         }
         private void debugUpdate_Tick(object sender, EventArgs e)
         {
-            debugText.Text = "Debug:\nBullets Flying: " + arrBullets.Count.ToString() + "\nAliens Alive:" + arrAliens.Count.ToString() + "\nPlayer Health: " + playerHealth.ToString(); ;
+            debugText.Text = "Debug:\nBullets Flying: " + arrBullets.Count.ToString() + "\nAliens Alive:" + arrAliens.Count.ToString() + "\nPlayer Health: " + playerHealth.ToString() + "\nhitSideLeft: " + hitSideLeft.ToString() + "\nhitSideRight: " + hitSideRight.ToString();
         }
         private void tmrLogoAnimation_Tick(object sender, EventArgs e)
         {
@@ -594,35 +616,46 @@ namespace SpaceInvaders2017
         // camp in corners by shooting every time it hits a side.
         private void hitSideCheck()
         {
-            if (hitSideLeft)
-            {
-                foreach (PictureBox alien in Controls.OfType<PictureBox>())
-                {
-                    if (alien.Left >= this.Width - 20)
-                    {
+            int x = 0;
+            //foreach (PictureBox alien in Controls.OfType<PictureBox>())
+            //{
+            //    if (x < 1)
+            //    {
+            //        if (alien.Left >= this.Width - 20)
+            //        {
+            //            if (hitSideLeft)
+            //            {
+            //                hitSideLeft = false;
+            //                hitSideRight = true;
+            //            }
+            //            alienUpdate(false);
+            //            shootAtShip(2);
 
-                        alienUpdate(false);
-                        shootAtShip(2);
+            //            x++;
+            //        }
+            //        else if (alien.Left <= 20)
+            //        {
+            //            if (hitSideRight)
+            //            {
+            //                hitSideRight = false;
+            //                hitSideLeft = true;
+            //            }
 
-                    }
-                }
-            }
-            else if (hitSideRight) { 
-                foreach (PictureBox alien in Controls.OfType<PictureBox>())
-                {
-                    if (alien.Left <= 20)
-                    {
+            //            alienUpdate(true);
+            //            shootAtShip(1);
 
-                        alienUpdate(true);
-                        shootAtShip(1);
-                    }
-                }
-            }
+            //            x++;
 
-           
+            //        }
+            //        else
+            //        {
+            //            x++;
+            //        }
+            //    }
+            //}
         }
 
-        
+
         //------------------------------------------------------------------------
         //---------------------------- Movement ----------------------------------
         //------------------------------------------------------------------------
