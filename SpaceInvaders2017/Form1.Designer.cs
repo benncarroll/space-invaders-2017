@@ -41,7 +41,6 @@
             this.logoBox = new System.Windows.Forms.PictureBox();
             this.tmrLogoAnimation = new System.Windows.Forms.Timer(this.components);
             this.tmrWindowAnimation = new System.Windows.Forms.Timer(this.components);
-            this.tmrFireRate = new System.Windows.Forms.Timer(this.components);
             this.buttonBeginner = new System.Windows.Forms.Button();
             this.buttonExpert = new System.Windows.Forms.Button();
             this.screenFlashBox = new System.Windows.Forms.PictureBox();
@@ -52,6 +51,7 @@
             // 
             // tmrPowerUp
             // 
+            this.tmrPowerUp.Enabled = false;
             this.tmrPowerUp.Interval = 10000;
             this.tmrPowerUp.Tick += new System.EventHandler(this.tmrPowerUp_Tick);
             // 
@@ -132,12 +132,6 @@
             this.tmrWindowAnimation.Enabled = true;
             this.tmrWindowAnimation.Interval = 10;
             this.tmrWindowAnimation.Tick += new System.EventHandler(this.tmrWindowAnimation_Tick);
-            // 
-            // tmrFireRate
-            // 
-            this.tmrFireRate.Enabled = true;
-            this.tmrFireRate.Interval = 500;
-            this.tmrFireRate.Tick += new System.EventHandler(this.tmrFireRate_Tick);
             // 
             // buttonBeginner
             // 
@@ -229,7 +223,7 @@
         private System.Windows.Forms.PictureBox logoBox;
         private System.Windows.Forms.Timer tmrLogoAnimation;
         private System.Windows.Forms.Timer tmrWindowAnimation;
-        private System.Windows.Forms.Timer tmrFireRate;
+        //private System.Windows.Forms.Timer tmrFireRate;
         private System.Windows.Forms.Button buttonBeginner;
         private System.Windows.Forms.Button buttonExpert;
         private System.Windows.Forms.Timer tmrScreenFlash;

@@ -90,18 +90,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
@@ -141,6 +141,16 @@
     <None Include="img\logo.png" />
     <None Include="img\baseshipb.ico" />
     <None Include="img\saucer2b.ico" />
+    <None Include="img\bomb.png" />
+    <None Include="img\health.png" />
+    <None Include="img\laser.png" />
+    <None Include="img\gameicons\alienicon.png" />
+    <None Include="img\gameicons\alien.png" />
+    <None Include="img\gameicons\bomb.png" />
+    <None Include="img\gameicons\health.png" />
+    <None Include="img\gameicons\laser.png" />
+    <None Include="img\gameicons\playership.png" />
+    <None Include="img\gameicons\ship.jpg" />
     <Content Include="img\ToDo.txt" />
     <None Include="Resources\logo.bmp" />
     <None Include="sound\shoot.wav" />
