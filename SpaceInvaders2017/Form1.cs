@@ -8,6 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Media;
+using System.Windows.Media;
+
+#pragma warning disable CS0252
 
 namespace SpaceInvaders2017
 {
@@ -20,10 +23,9 @@ namespace SpaceInvaders2017
 
         // Defines alien array, and other important global variables 
         // needed in various parts of the game
-        
+
         List<PictureBox> arrAliens = new List<PictureBox>();
         List<PictureBox> arrBullets = new List<PictureBox>();
-        List<Rectangle> arrStars = new List<Rectangle>();
 
         bool moveDir = true;
         bool finished = false;
@@ -46,12 +48,16 @@ namespace SpaceInvaders2017
         int waveNumber = 0;
         int bulletcount = 0;
         int allowedBulletCount = 5;
+        int stretchSpeed = 2;
 
         PictureBox ship = new PictureBox();
         PictureBox playerHealthBar = new PictureBox();
         PictureBox powerUp = new PictureBox();
+
         Random r = new Random();
         KeyPressEventArgs checkKeysHelper = new KeyPressEventArgs((char)1);
+        MediaPlayer backgroundMusic = new MediaPlayer();
+
 
         //------------------------------------------------------------------------
         //----------------------- Event Listeners --------------------------------
@@ -60,13 +66,13 @@ namespace SpaceInvaders2017
 
         public Form1()
         {
-        
+
             InitializeComponent();
             this.Click += Form1_Click;
             this.KeyPress += Form1_KeyPress;
             this.KeyDown += Form1_KeyDown;
             this.KeyUp += Form1_KeyUp;
-            
+
         }
 
         // Is called when any alphanumeric key pressed, and checks it against a number
@@ -88,15 +94,14 @@ namespace SpaceInvaders2017
                 newWave();
                 playerdied = false;
             }
-            if (checkKeys("O") || checkKeys ("o"))
+            if (checkKeys("O") || checkKeys("o"))
             {
                 toggleDebug();
                 shootAtShip(2);
             }
             if (checkKeys("q") || checkKeys("Q"))
             {
-                this.Height = 800;
-                this.Width = 1000;
+                stretchSpeed = 5;
             }
 
         }
@@ -104,11 +109,11 @@ namespace SpaceInvaders2017
         {
             if (e.KeyCode == Keys.Left)
             {
-                shipDir = -10;   
+                shipDir = -10;
             }
             else if (e.KeyCode == Keys.Right)
             {
-                 shipDir = 10;
+                shipDir = 10;
             }
 
         }
@@ -126,6 +131,9 @@ namespace SpaceInvaders2017
 
             powerUp.Visible = false;
 
+            backgroundMusic.Open(new Uri("C:\\Users\\Ben Carroll\\BitBucket\\Ben's Space Invaders\\SpaceInvaders2017\\sound\\gameMusic.mp3"));
+            backgroundMusic.Play();
+
         }
 
         // This function is called when the user clicks anywhere on the window
@@ -137,19 +145,23 @@ namespace SpaceInvaders2017
             }
         }
 
+        // These functions are called when a home screen button is clicked
+        // and set game variables based on difiiculty.
         private void buttonBeginner_Click(object sender, EventArgs e)
         {
-            //tmrFireRate.Interval = 400;
-            allowedBulletCount = 5;		
+            allowedBulletCount = 3;
             playerAllowedHealth = 5;
             startGame();
         }
         private void buttonExpert_Click(object sender, EventArgs e)
         {
-            //tmrFireRate.Interval = 500;
-            allowedBulletCount = 3;
+            allowedBulletCount = 1;
             playerAllowedHealth = 2;
             startGame();
+        }
+        private void buttonInstructions_Click(object sender, EventArgs e)
+        {
+            displayText.Text = "USE ARROW KEYS TO MOVE SIDE TO SIDE\n\nUSE SPACE TO SHOOT";
         }
 
 
@@ -188,7 +200,6 @@ namespace SpaceInvaders2017
             {
                 // Disables text
                 hideText();
-                tmrFast.Interval = 30;
                 finished = false;
                 shipDir = 0;
                 tmrMove.Interval = 100;
@@ -196,7 +207,6 @@ namespace SpaceInvaders2017
 
                 playerHealth = playerAllowedHealth;
                 updateplayerHealthBar();
-
 
                 //Generates aliens based on current level.
                 //Choose type of level 
@@ -225,15 +235,16 @@ namespace SpaceInvaders2017
             {
                 // Generates bullet
                 PictureBox shipbullet = new PictureBox();
-                shipbullet.Size = new Size(3, 5);
+                shipbullet.Size = new Size(2, 15);
                 shipbullet.Name = "shipbullet";
-                shipbullet.BackColor = Color.Red;
+                shipbullet.BackColor = System.Drawing.Color.FromArgb(0, 255, 0);
                 // Places bullet within ship bounds
                 shipbullet.Location = new Point(ship.Left + (ship.Width / 2) - (shipbullet.Size.Width / 2), ship.Top);
                 playSound(2);
                 arrBullets.Add(shipbullet);
                 Controls.Add(shipbullet);
             }
+            updateBulletCount();
         }
 
         // This function is called at the very start of a game and 
@@ -242,8 +253,8 @@ namespace SpaceInvaders2017
         {
             // Generates ship
             PictureBox ship = new PictureBox();
-            ship.Size = new Size(48, 40);
-            ship.BackColor = Color.Black;
+            ship.Size = new Size(44, 26);
+            ship.BackColor = System.Drawing.Color.Black;
             ship.Image = SpaceInvaders2017.Properties.Resources.ship;
             ship.Name = "ship";
             ship.Location = new Point(this.Width / 2, this.Height - 100);
@@ -252,7 +263,7 @@ namespace SpaceInvaders2017
             // Generates Health Bar
             PictureBox playerHealthBar = new PictureBox();
             playerHealthBar.Size = new Size(this.Width, 10);
-            playerHealthBar.BackColor = Color.DarkGreen;
+            playerHealthBar.BackColor = System.Drawing.Color.FromArgb(0, 255, 0);
             playerHealthBar.Name = "playerHealthBar";
             playerHealthBar.Location = new Point(0, this.Height - 50);
             Controls.Add(playerHealthBar);
@@ -260,7 +271,7 @@ namespace SpaceInvaders2017
         }
 
         // This function is called every wave, and takes variables 
-        // corresponding to the amount of rows and colums of aliens
+        // corresponding to the amount of rows and columns of aliens
         // requested.
         private void createAliens(int f, int g)
         {
@@ -271,15 +282,31 @@ namespace SpaceInvaders2017
                 {
                     // Creates new alien
                     PictureBox pic = new PictureBox();
-                    pic.Size = new Size(48, 48);
-                    pic.Location = new Point(55 * x + 50, 55 * y + 50);
-                    pic.Image = SpaceInvaders2017.Properties.Resources.alien;
-                    pic.BackColor = Color.Transparent;
-		    //Color.FromArgb(r.Next(1, 256), r.Next(1, 256), r.Next(1, 256));
+                    pic.Location = new Point(70 * x + 50, 70 * y + 50);
+                    pic.BackColor = System.Drawing.Color.Black;
+                    //System.Drawing.Color.FromArgb(r.Next(1, 256), r.Next(1, 256), r.Next(1, 256));
                     pic.Name = "alien";
                     // Adds new alien to array and Controls
                     Controls.Add(pic);
                     arrAliens.Add(pic);
+
+                    int b = -(y - f) - 1;
+
+                    switch (b)
+                    {
+                        case 0:
+                            pic.Image = SpaceInvaders2017.Properties.Resources.alien1;
+                            pic.Size = new Size(42, 29);
+                            break;
+                        case 1:
+                            pic.Image = SpaceInvaders2017.Properties.Resources.alien2;
+                            pic.Size = new Size(44, 33);
+                            break;
+                        default:
+                            pic.Image = SpaceInvaders2017.Properties.Resources.alien3;
+                            pic.Size = new Size(44, 43);
+                            break;
+                    }
                 }
             }
 
@@ -306,24 +333,25 @@ namespace SpaceInvaders2017
 
                 // Creates a new alienbullet
                 PictureBox pic = new PictureBox();
-                pic.Size = new Size(3, 5);
-                pic.BackColor = Color.YellowGreen;
+                pic.Size = new Size(2, 15);
+                pic.BackColor = System.Drawing.Color.White;
                 pic.Name = "alienbullet";
 
-                if (a == 0)
+                switch (a)
                 {
-                    // Places it at the base of a randomly selected alien and adds it to Controls
-                    pic.Location = new Point(arrAliens[x].Left + (arrAliens[x].Width / 2), arrAliens[x].Bottom);
+                    case 0:
+                        // Places it at the base of a randomly selected alien and adds it to Controls
+                        pic.Location = new Point(arrAliens[x].Left + (arrAliens[x].Width / 2), arrAliens[x].Bottom);
+                        break;
+                    case 1:
+                        pic.Location = new Point(arrAliens[0].Left + (arrAliens[0].Width / 2), arrAliens[0].Bottom);
+                        break;
+                    case 2:
+                        int b = arrAliens.Count - 1;
+                        pic.Location = new Point(arrAliens[b].Left + (arrAliens[b].Width / 2), arrAliens[b].Bottom);
+                        break;
                 }
-                else if (a == 1)
-                {
-                    pic.Location = new Point(arrAliens[0].Left + (arrAliens[0].Width / 2), arrAliens[0].Bottom);
-                }
-                else if (a == 2)
-                {
-                    int b = arrAliens.Count - 1;
-                    pic.Location = new Point(arrAliens[b].Left + (arrAliens[b].Width / 2), arrAliens[b].Bottom);
-                }
+
 
                 arrBullets.Add(pic);
                 Controls.Add(pic);
@@ -336,7 +364,7 @@ namespace SpaceInvaders2017
             int type = r.Next(0, 2);
             int position = r.Next(20, this.Width - 20);
 
-            powerUp.BackColor = Color.White;
+            powerUp.BackColor = System.Drawing.Color.White;
             powerUp.Size = new Size(15, 15);
             powerUp.Name = "powerUp";
             powerUp.Location = new Point(position, this.Height - 100);
@@ -377,7 +405,6 @@ namespace SpaceInvaders2017
             moveAliens();
             checkHits();
             deleteDead();
-            updateBulletCount();
         }
         private void tmrSlow_Tick(object sender, EventArgs e)
         {
@@ -417,29 +444,27 @@ namespace SpaceInvaders2017
         }
         private void debugUpdate_Tick(object sender, EventArgs e)
         {
-            debugText.Text = "Debug:\nBullets Flying: " + arrBullets.Count.ToString() + "\nAliens Alive:" + arrAliens.Count.ToString() + "\nPlayer Health: " + playerHealth.ToString() + "\nTest";
+            debugText.Text = "Debug:\nBullets Flying: " + arrBullets.Count.ToString() + "\nAliens Alive:" + arrAliens.Count.ToString() + "\nPlayer Health: " + playerHealth.ToString() + "\nPControls: " + Controls.Count.ToString();
         }
         private void tmrLogoAnimation_Tick(object sender, EventArgs e)
         {
             logoBox.Top -= 5;
             buttonExpert.Top -= 10;
             buttonBeginner.Top -= 10;
-            if (logoBox.Top + 170 < 0)
+            buttonInstructions.Top -= 10;
+
+            if (logoBox.Top + logoBox.Height < 0)
             {
                 logoBox.Visible = false;
                 logoBox.Enabled = false;
+                tmrLogoAnimation.Enabled = false;
             }
             if (buttonBeginner.Top + 40 < 0)
             {
-                tmrLogoAnimation.Enabled = false;
                 Controls.Remove(buttonExpert);
                 Controls.Remove(buttonBeginner);
-
-
+                Controls.Remove(buttonInstructions);
             }
-
-
-
         }
         private void tmrWindowAnimation_Tick(object sender, EventArgs e)
         {
@@ -450,11 +475,11 @@ namespace SpaceInvaders2017
             if (this.Height < 800)
             {
                 this.Top = scHeight / 2 - this.Height / 2;
-                this.Height += 2;
+                this.Height += stretchSpeed;
             }
             if (this.Height > 600 && this.Width < 1000)
             {
-                this.Width += 2;
+                this.Width += stretchSpeed;
             }
             if (this.Height > 400)
             {
@@ -465,22 +490,19 @@ namespace SpaceInvaders2017
 
                 buttonExpert.Enabled = true;
                 buttonBeginner.Enabled = true;
+                buttonInstructions.Enabled = true;
             }
             if (this.Height > 799 && this.Width > 999)
             {
                 tmrWindowAnimation.Enabled = false;
                 buttonExpert.Enabled = true;
                 buttonBeginner.Enabled = true;
+                buttonInstructions.Enabled = true;
                 this.Top = scHeight / 2 - this.Height / 2;
                 this.Location = new Point(scWidth / 2 - this.Width / 2, this.Top);
 
             }
         }
-        //private void tmrFireRate_Tick(object sender, EventArgs e)
-        //{
-        //    allowFire = true;
-
-        //}
         private void tmrScreenFlash_Tick(object sender, EventArgs e)
         {
             screenFlash(1);
@@ -513,12 +535,15 @@ namespace SpaceInvaders2017
             playerHealthBar.Visible = true;
         }
 
+        // This function is used by the keypress checking function
+        // to tell if two are the same.
         private bool checkKeys(string b)
         {
             if (checkKeysHelper.KeyChar.ToString() == b)
             {
                 return true;
-            } else
+            }
+            else
             {
                 return false;
             }
@@ -531,14 +556,14 @@ namespace SpaceInvaders2017
             if (mode == 0)
             {
                 tmrScreenFlash.Enabled = true;
-                screenFlashBox.BackColor = Color.FromArgb(30, 255, 0, 0);
+                screenFlashBox.BackColor = System.Drawing.Color.FromArgb(30, 255, 0, 0);
                 screenFlashBox.Visible = true;
 
             }
             else if (mode == 1)
             {
                 screenFlashBox.Visible = false;
-                //this.BackColor = Color.Black;
+                //this.BackColor = System.Drawing.Color.Black;
                 tmrScreenFlash.Enabled = false;
             }
 
@@ -548,22 +573,28 @@ namespace SpaceInvaders2017
         // in numerous functions.
         private void playSound(int a)
         {
-            if (a == 1)
+            switch (a)
             {
-                SoundPlayer sound1 = new SoundPlayer(SpaceInvaders2017.Properties.Resources.hit);
-                sound1.Play();
-            }
-            else if (a == 2)
-            {
-                SoundPlayer sound2 = new SoundPlayer(SpaceInvaders2017.Properties.Resources.shoot);
-                sound2.Play();
-            }
-            else if (a == 3)
-            {
-                SoundPlayer sound3 = new SoundPlayer(SpaceInvaders2017.Properties.Resources.death);
-                sound3.Play();
+                case 0:
+                    SoundPlayer sound0 = new SoundPlayer(SpaceInvaders2017.Properties.Resources.hit);
+                    sound0.Play();
+                    break;
+                case 1:
+                    SoundPlayer sound1 = new SoundPlayer(SpaceInvaders2017.Properties.Resources.hit);
+                    sound1.Play();
+                    break;
+                case 2:
+                    SoundPlayer sound2 = new SoundPlayer(SpaceInvaders2017.Properties.Resources.shoot);
+                    sound2.Play();
+                    break;
+                case 3:
+                    SoundPlayer sound3 = new SoundPlayer(SpaceInvaders2017.Properties.Resources.death);
+                    sound3.Play();
+                    break;
 
             }
+
+
         }
 
         // This function toggles the visibility of the debug window.
@@ -582,26 +613,26 @@ namespace SpaceInvaders2017
 
         }
 
-        // This function updates the size and colour of the health bar.
+        // This function updates the size and Color of the health bar.
         private void updateplayerHealthBar()
         {
             playerHealthBar.Width = playerHealth * (this.Width / playerAllowedHealth);
 
             if (playerHealth > 3)
             {
-                playerHealthBar.BackColor = Color.Green;
+                playerHealthBar.BackColor = System.Drawing.Color.Green;
             }
             else if (playerHealth < 2)
             {
-                playerHealthBar.BackColor = Color.Red;
+                playerHealthBar.BackColor = System.Drawing.Color.Red;
             }
             else if (playerHealth < 3 && playerAllowedHealth > 2)
             {
-                playerHealthBar.BackColor = Color.Orange;
+                playerHealthBar.BackColor = System.Drawing.Color.Orange;
             }
             else if (playerHealth < 4 && playerAllowedHealth > 2)
             {
-                playerHealthBar.BackColor = Color.Yellow;
+                playerHealthBar.BackColor = System.Drawing.Color.Yellow;
             }
 
             screenFlash(0);
@@ -620,8 +651,8 @@ namespace SpaceInvaders2017
                 }
             }
 
-            if (bulletcount > allowedBulletCount) allowFire = false;
-            if (bulletcount <= allowedBulletCount) allowFire = true;
+            if (bulletcount >= allowedBulletCount) allowFire = false;
+            if (bulletcount < allowedBulletCount) allowFire = true;
         }
 
         // This function is called when aliens hit a side, and handles
@@ -632,9 +663,9 @@ namespace SpaceInvaders2017
             foreach (PictureBox alien in arrAliens)
             {
 
-                if (alien.Left >= this.Width - 21)
+                if (alien.Left >= this.Width - 70)
                 {
-                     alienUpdate(false);
+                    alienUpdate(false);
                 }
 
                 if (alien.Left <= 21)
@@ -695,21 +726,17 @@ namespace SpaceInvaders2017
             checkEndGame();
             hitSideCheck();
 
+            bool gameOverHelper = false;
+
             foreach (PictureBox p in arrAliens)
             {
-                if (p.Name == "alien")
+                if (p.Top > this.Height || p.Bounds.IntersectsWith(ship.Bounds))
                 {
-                    if (p.Top > this.Height || p.Bounds.IntersectsWith(ship.Bounds))
-                    {
-
-                        p.Tag = "dead";
-
-                        gameOver();
-                    }
+                    gameOverHelper = true;
                 }
             }
 
-
+            if (gameOverHelper) gameOver();
         }
 
         // This function works with moveAliens() and hitSide() to move aliens down and
@@ -797,8 +824,8 @@ namespace SpaceInvaders2017
                     if (p.Name == "shipbullet" && p.Bounds.IntersectsWith(a.Bounds))
                     {
                         // Hides alien by changing BackColor
-                        p.Visible = false;
-                        a.Visible = false;
+                        //p.Visible = false;
+                        //a.Visible = false;
                         // Labels Control for deletion
                         p.Tag = "dead";
                         a.Tag = "dead";
@@ -814,8 +841,14 @@ namespace SpaceInvaders2017
                     playerHealth -= 1;
                     updateplayerHealthBar();
                     checkEndGame();
+                    playSound(3);
                     p.Tag = "dead";
                 }
+                if (p.Name == "alienbullet" && p.Top > this.Height)
+                {
+                    p.Tag = "dead";
+                }
+
             }
 
 
@@ -824,20 +857,24 @@ namespace SpaceInvaders2017
         {
             foreach (PictureBox m in Controls.OfType<PictureBox>())
             {
-#pragma warning disable CS0252 // Possible unintended reference comparison; left hand side needs cast
                 if (m.Tag == "dead")
-#pragma warning restore CS0252 // Possible unintended reference comparison; left hand side needs cast
                 {
-
-                    
-                    if (m.Name == "alien")
+                    switch (m.Name)
                     {
-                        arrAliens.Remove(m);
-                        Controls.Remove(m);
-                    
+                        case "alien":
+                            arrAliens.Remove(m);
+                            break;
+                        case "shipbullet":
+                            arrBullets.Remove(m);
+                            break;
+                        case "alienbullet":
+                            arrBullets.Remove(m);
+                            break;
+
                     }
 
                     Controls.Remove(m);
+                    m.Dispose();
 
                 }
             }
@@ -845,9 +882,7 @@ namespace SpaceInvaders2017
             {
                 foreach (PictureBox m in Controls.OfType<PictureBox>())
                 {
-#pragma warning disable CS0252 // Possible unintended reference comparison; left hand side needs cast
                     if (m.Tag == "dead")
-#pragma warning restore CS0252 // Possible unintended reference comparison; left hand side needs cast
                     {
                         arrBullets.Remove(m);
                         Controls.Remove(m);
@@ -855,6 +890,10 @@ namespace SpaceInvaders2017
 
                 }
             }
+        }
+        private static bool deleteSpecifier(PictureBox s)
+        {
+            return s.Name.Contains("alien");
         }
 
         // This function checks to see if there are any aliens left, and
@@ -874,10 +913,8 @@ namespace SpaceInvaders2017
 
                 // Displays text
                 setText("PRESS N TO START NEXT WAVE\n\nINVADERS: " + (aliensx * aliensy));
-                tmrFast.Interval = 1;
 
-                clearAliens();
-                clearBullets();
+                clearScreen();
             }
 
             if (playerHealth <= 0 && !finished)
@@ -885,15 +922,17 @@ namespace SpaceInvaders2017
                 gameOver();
             }
         }
-        private void clearBullets()
+        private void clearScreen()
         {
-            foreach (PictureBox p in Controls.OfType<PictureBox>())
+            foreach (PictureBox s in arrAliens.OfType<PictureBox>())
             {
-                if (!(p.Name == "ship"))
-                {
-                    p.Tag = "dead";
-                }
+                s.Tag = "dead";
             }
+            foreach (PictureBox s in Controls.OfType<PictureBox>())
+            {
+                arrAliens.Remove(s);
+            }
+            arrAliens.RemoveAll(deleteSpecifier);
         }
         private void clearAliens()
         {
@@ -904,6 +943,7 @@ namespace SpaceInvaders2017
                     p.Tag = "dead";
                 }
             }
+            deleteDead();
         }
 
         // These function is called to end a game.
@@ -916,15 +956,19 @@ namespace SpaceInvaders2017
 
             playSound(3);
 
+            string smartSentence = "";
+            if (arrAliens.Count < 6) smartSentence = "ONLY ";
+
             // Displays text
-            setText("GAME OVER. YOU DIED ON A WAVE WITH " + (aliensx * aliensy) + " ALIENS.\n\nPRESS R TO RESTART.");
+            setText("GAME OVER. YOU "+ smartSentence +"HAD " + arrAliens.Count.ToString() + " LEFT TO KILL.\n\nPRESS R TO RESTART.");
+
+            clearScreen();
 
             aliensx = 3;
             aliensy = 10;
-
-            clearAliens();
 
         }
 
     }
 }
+#pragma warning restore CS0252 // Possible unintended reference comparison; left hand side needs cast

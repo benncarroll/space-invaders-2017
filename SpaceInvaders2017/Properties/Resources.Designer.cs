@@ -63,9 +63,9 @@ namespace SpaceInvaders2017.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap alien {
+        internal static System.Drawing.Bitmap alien1 {
             get {
-                object obj = ResourceManager.GetObject("alien", resourceCulture);
+                object obj = ResourceManager.GetObject("alien1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -73,9 +73,19 @@ namespace SpaceInvaders2017.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap alien1 {
+        internal static System.Drawing.Bitmap alien2 {
             get {
-                object obj = ResourceManager.GetObject("alien1", resourceCulture);
+                object obj = ResourceManager.GetObject("alien2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap alien3 {
+            get {
+                object obj = ResourceManager.GetObject("alien3", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -154,6 +164,16 @@ namespace SpaceInvaders2017.Properties {
         internal static System.IO.UnmanagedMemoryStream shoot {
             get {
                 return ResourceManager.GetStream("shoot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Space_invaders_logo {
+            get {
+                object obj = ResourceManager.GetObject("Space_invaders_logo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }
