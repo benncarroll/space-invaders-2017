@@ -2,13 +2,4 @@
 
 High Priority:
 
-1. Fix 'dead' but not dead aliens 
-2. Implement Powerups
-
-Medium Priority:
-
-1. BOSS ALIENS (One big thing with heaps of health, another healthbar up top maybe?, colour changing alien.)
-
-Eh Priority:
-
-1. shields
+1. Implement Powerups (bomb)

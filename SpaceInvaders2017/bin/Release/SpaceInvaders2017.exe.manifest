@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="SpaceInvaders2017.exe" size="187904">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="SpaceInvaders2017.exe" size="185856">
       <assemblyIdentity name="SpaceInvaders2017" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>soYyK/GbJsBMIT+5dbsGtWHwAXx10HmrLEkaHh8xXKs=</dsig:DigestValue>
+        <dsig:DigestValue>9Pl4JLBYR4BN8fKZYiACU5/MvRioQ7y0a4iIoENQD2Y=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

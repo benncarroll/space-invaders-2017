@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tmrPowerUp = new System.Windows.Forms.Timer(this.components);
+            this.statusLabel = new System.Windows.Forms.Label();
             this.tmrSlow = new System.Windows.Forms.Timer(this.components);
             this.displayText = new System.Windows.Forms.Label();
             this.tmrMove = new System.Windows.Forms.Timer(this.components);
@@ -44,16 +45,31 @@
             this.buttonBeginner = new System.Windows.Forms.Button();
             this.buttonExpert = new System.Windows.Forms.Button();
             this.tmrScreenFlash = new System.Windows.Forms.Timer(this.components);
-            this.screenFlashBox = new System.Windows.Forms.PictureBox();
+            this.screenFlashBox = new System.Windows.Forms.Label();
             this.buttonInstructions = new System.Windows.Forms.Button();
+            this.tmrClose = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.logoBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.screenFlashBox)).BeginInit();
             this.SuspendLayout();
             // 
             // tmrPowerUp
             // 
             this.tmrPowerUp.Interval = 10000;
             this.tmrPowerUp.Tick += new System.EventHandler(this.tmrPowerUp_Tick);
+            // 
+            // statusLabel
+            // 
+            this.statusLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.statusLabel.BackColor = System.Drawing.Color.Transparent;
+            this.statusLabel.Font = new System.Drawing.Font("NSimSun", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.statusLabel.ForeColor = System.Drawing.Color.Lime;
+            this.statusLabel.Location = new System.Drawing.Point(-10, -55);
+            this.statusLabel.Margin = new System.Windows.Forms.Padding(10, 0, 3, 0);
+            this.statusLabel.Name = "statusLabel";
+            this.statusLabel.Size = new System.Drawing.Size(250, 30);
+            this.statusLabel.TabIndex = 7;
+            this.statusLabel.Text = "test";
+            this.statusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.statusLabel.Visible = false;
             // 
             // tmrSlow
             // 
@@ -70,7 +86,7 @@
             this.displayText.Location = new System.Drawing.Point(0, 0);
             this.displayText.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.displayText.Name = "displayText";
-            this.displayText.Size = new System.Drawing.Size(784, 0);
+            this.displayText.Size = new System.Drawing.Size(500, 0);
             this.displayText.TabIndex = 0;
             this.displayText.Text = "displayText";
             this.displayText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -91,7 +107,7 @@
             this.debugText.BackColor = System.Drawing.Color.Black;
             this.debugText.Dock = System.Windows.Forms.DockStyle.Right;
             this.debugText.ForeColor = System.Drawing.Color.Green;
-            this.debugText.Location = new System.Drawing.Point(745, 0);
+            this.debugText.Location = new System.Drawing.Point(461, 0);
             this.debugText.Margin = new System.Windows.Forms.Padding(10);
             this.debugText.Name = "debugText";
             this.debugText.Size = new System.Drawing.Size(39, 13);
@@ -114,7 +130,7 @@
             this.logoBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.logoBox.BackColor = System.Drawing.Color.Transparent;
             this.logoBox.Image = global::SpaceInvaders2017.Properties.Resources.Space_invaders_logo;
-            this.logoBox.Location = new System.Drawing.Point(40, 20);
+            this.logoBox.Location = new System.Drawing.Point(-102, 20);
             this.logoBox.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.logoBox.Name = "logoBox";
             this.logoBox.Size = new System.Drawing.Size(705, 294);
@@ -139,7 +155,7 @@
             this.buttonBeginner.Enabled = false;
             this.buttonBeginner.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonBeginner.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.buttonBeginner.Location = new System.Drawing.Point(193, 495);
+            this.buttonBeginner.Location = new System.Drawing.Point(51, 538);
             this.buttonBeginner.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.buttonBeginner.Name = "buttonBeginner";
             this.buttonBeginner.Size = new System.Drawing.Size(101, 38);
@@ -155,7 +171,7 @@
             this.buttonExpert.Enabled = false;
             this.buttonExpert.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonExpert.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.buttonExpert.Location = new System.Drawing.Point(338, 495);
+            this.buttonExpert.Location = new System.Drawing.Point(196, 538);
             this.buttonExpert.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.buttonExpert.Name = "buttonExpert";
             this.buttonExpert.Size = new System.Drawing.Size(101, 38);
@@ -172,11 +188,11 @@
             // screenFlashBox
             // 
             this.screenFlashBox.BackColor = System.Drawing.Color.Transparent;
+            this.screenFlashBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.screenFlashBox.Location = new System.Drawing.Point(0, 0);
             this.screenFlashBox.Name = "screenFlashBox";
-            this.screenFlashBox.Size = new System.Drawing.Size(1, 1);
+            this.screenFlashBox.Size = new System.Drawing.Size(500, 0);
             this.screenFlashBox.TabIndex = 5;
-            this.screenFlashBox.TabStop = false;
             this.screenFlashBox.Visible = false;
             // 
             // buttonInstructions
@@ -185,8 +201,9 @@
             this.buttonInstructions.BackColor = System.Drawing.Color.Black;
             this.buttonInstructions.Enabled = false;
             this.buttonInstructions.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonInstructions.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonInstructions.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.buttonInstructions.Location = new System.Drawing.Point(482, 495);
+            this.buttonInstructions.Location = new System.Drawing.Point(340, 538);
             this.buttonInstructions.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.buttonInstructions.Name = "buttonInstructions";
             this.buttonInstructions.Size = new System.Drawing.Size(101, 38);
@@ -195,30 +212,37 @@
             this.buttonInstructions.UseVisualStyleBackColor = false;
             this.buttonInstructions.Click += new System.EventHandler(this.buttonInstructions_Click);
             // 
+            // tmrClose
+            // 
+            this.tmrClose.Interval = 2000;
+            this.tmrClose.Tick += new System.EventHandler(this.tmrClose_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
-            this.ClientSize = new System.Drawing.Size(784, 0);
+            this.ClientSize = new System.Drawing.Size(500, 0);
+            this.Controls.Add(this.statusLabel);
             this.Controls.Add(this.buttonInstructions);
-            this.Controls.Add(this.screenFlashBox);
             this.Controls.Add(this.buttonExpert);
             this.Controls.Add(this.buttonBeginner);
             this.Controls.Add(this.logoBox);
             this.Controls.Add(this.debugText);
             this.Controls.Add(this.displayText);
+            this.Controls.Add(this.screenFlashBox);
             this.Cursor = System.Windows.Forms.Cursors.Cross;
             this.DoubleBuffered = true;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Space Invaders!";
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.logoBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.screenFlashBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -226,6 +250,7 @@
 
         #endregion
         private System.Windows.Forms.Timer tmrPowerUp;
+        private System.Windows.Forms.Label statusLabel;
         private System.Windows.Forms.Timer tmrSlow;
         private System.Windows.Forms.Label displayText;
         private System.Windows.Forms.Timer tmrMove;
@@ -239,8 +264,9 @@
         private System.Windows.Forms.Button buttonBeginner;
         private System.Windows.Forms.Button buttonExpert;
         private System.Windows.Forms.Timer tmrScreenFlash;
-        private System.Windows.Forms.PictureBox screenFlashBox;
+        private System.Windows.Forms.Label screenFlashBox;
         private System.Windows.Forms.Button buttonInstructions;
+        private System.Windows.Forms.Timer tmrClose;
     }
 }
 
