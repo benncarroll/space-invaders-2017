@@ -2,15 +2,15 @@
 
 ### This is a version of Space Invaders, made in C# ###
 
-* It has aliens, a ship, bullets, collision detection and increasingly harder levels.
-* Version 0.2
+* It has aliens, a ship, bullets, collision detection, scoring and increasingly harder levels.
+* Version 0.9
 
 ### How to play ###
 
 * Download from here
 * Go to SpaceInvaders2017/bin/Debug/publish/
 * Launch SpaceInvaders2017
-* Play with A, S & D as movement controls, and W as shoot.
+* Play with arrow keys as movement controls, and space as shoot.
 * Enjoy!
 
 ### Suggestions/Comments ###
