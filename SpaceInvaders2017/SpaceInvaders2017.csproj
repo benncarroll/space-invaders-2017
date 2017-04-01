@@ -127,6 +127,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="img\gameicons\stun.png" />
     <Content Include="sound\gameMusic.mp3" />
     <None Include="Resources\saucer2b.ico" />
     <None Include="img\gameicons\alienicon.png" />

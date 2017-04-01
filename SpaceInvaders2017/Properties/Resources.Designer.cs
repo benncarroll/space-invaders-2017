@@ -91,16 +91,6 @@ namespace SpaceInvaders2017.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap bomb {
-            get {
-                object obj = ResourceManager.GetObject("bomb", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
         internal static System.IO.UnmanagedMemoryStream death {
@@ -173,6 +163,16 @@ namespace SpaceInvaders2017.Properties {
         internal static System.Drawing.Bitmap Space_invaders_logo {
             get {
                 object obj = ResourceManager.GetObject("Space_invaders_logo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap stun {
+            get {
+                object obj = ResourceManager.GetObject("stun", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

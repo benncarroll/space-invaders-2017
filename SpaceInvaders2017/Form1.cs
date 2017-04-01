@@ -40,8 +40,8 @@ namespace SpaceInvaders2017
         bool specialFireHelper = false;
         bool specialFireHelper2 = false;
         bool powerUpTextHelper = false;
-        bool powerUpText = false;
         bool playedBefore = false;
+        bool laserOwned = false;
 
         int highScore = 0;
         int playerHealth = 5;
@@ -118,6 +118,7 @@ namespace SpaceInvaders2017
             {
                 if (specialFireHelper2)
                 {
+                    powerUpTextHelper = true;
                     specialFireHelper = true;
                     specialFireHelper2 = false;
                 }
@@ -152,6 +153,16 @@ namespace SpaceInvaders2017
                 shipDir = 0;
             }
         }
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (!msg.HWnd.Equals(Handle) &&
+                (keyData == Keys.Left || keyData == Keys.Right ||
+                 keyData == Keys.Up || keyData == Keys.Down || 
+                 keyData == Keys.Space || keyData == Keys.Escape))
+                return true;
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
 
         // This function is called on load, and is used to generate a ship
         // and some aliens for the first wave.
@@ -196,16 +207,21 @@ namespace SpaceInvaders2017
             allowedBulletCount = 3;
             playerAllowedHealth = 5;
             startGame();
+            this.Focus();
+
         }
         private void buttonExpert_Click(object sender, EventArgs e)
         {
             allowedBulletCount = 1;
             playerAllowedHealth = 2;
             startGame();
+            this.Focus();
+
         }
         private void buttonInstructions_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("CONTROLS:\nMOVE SHIP:      ←  →\nFIRE:                   SPACE\nFIRE LASER:       B");
+            MessageBox.Show("CONTROLS:\n\nMOVE SHIP:      ←  →\nFIRE:                   SPACE\nFIRE LASER:       B");
+            this.Focus();
         }
 
 
@@ -354,7 +370,7 @@ namespace SpaceInvaders2017
                         default:
                             pic.Image = SpaceInvaders2017.Properties.Resources.alien3;
                             pic.Tag = "alien3";
-                            pic.Size = new Size(44, 43);
+                            pic.Size = new Size(39, 36);
                             break;
                     }
 
@@ -412,11 +428,11 @@ namespace SpaceInvaders2017
         // This function is used to generate a power up
         private void createPowerUp()
         {
-            int type = r.Next(1, 3);
-            int position = r.Next(20, this.Width - 20);
+            int type = r.Next(0, 3);
+            int position = r.Next(60, this.Width - 90);
 
             powerUp.BackColor = System.Drawing.Color.White;
-            powerUp.Size = new Size(15, 15);
+            powerUp.Size = new Size(30, 30);
             powerUp.Name = "powerUp";
             powerUp.Location = new Point(position, this.Height - 100);
 
@@ -424,15 +440,15 @@ namespace SpaceInvaders2017
 
             switch (type)
             {
-                case 0:
-                    powerUp.Image = SpaceInvaders2017.Properties.Resources.bomb;
-                    powerUp.Tag = "bomb";
+                case 0:                 
+                    powerUp.Image = SpaceInvaders2017.Properties.Resources.stun;
+                    powerUp.Tag = "stun";
                     break;
-                case 1:
+                case 2:
                     powerUp.Image = SpaceInvaders2017.Properties.Resources.laser;
                     powerUp.Tag = "laser";
                     break;
-                case 2:
+                case 1:
                     powerUp.Image = SpaceInvaders2017.Properties.Resources.health;
                     powerUp.Tag = "health";
                     break;
@@ -460,7 +476,6 @@ namespace SpaceInvaders2017
         }
         private void tmrSlow_Tick(object sender, EventArgs e)
         {
-            checkEndGame();
             shootAtShip(0);
             allowUpdate = true;
         }
@@ -471,6 +486,7 @@ namespace SpaceInvaders2017
             checkHits();
             deleteDead();
             updatePlayerScore();
+            checkEndGame();
             if (specialFireHelper) specialFire(2);
         }
         private void tmrPowerUp_Tick(object sender, EventArgs e)
@@ -513,6 +529,7 @@ namespace SpaceInvaders2017
             buttonExpert.Top -= 10;
             buttonBeginner.Top -= 10;
             buttonInstructions.Top -= 10;
+            this.Focus();
 
             if (logoBox.Top + logoBox.Height < 0)
             {
@@ -530,6 +547,8 @@ namespace SpaceInvaders2017
         }
         private void tmrWindowAnimation_Tick(object sender, EventArgs e)
         {
+            this.Focus();
+
             if (this.Height < scHeight)
             {
                 this.Height += stretchSpeed;
@@ -582,6 +601,11 @@ namespace SpaceInvaders2017
         private void tmrClose_Tick(object sender, EventArgs e)
         {
             this.Close();
+        }
+        private void tmrStun_Tick(object sender, EventArgs e)
+        {
+            tmrMove.Enabled = true;
+            tmrSlow.Enabled = true;
         }
 
         //------------------------------------------------------------------------
@@ -637,7 +661,7 @@ namespace SpaceInvaders2017
         // This function updates the player score.
         private void updatePlayerScore()
         {
-            if (!powerUpText)
+            if (powerUpTextHelper)
             {
                 setText("SCORE: " + playerScore.ToString(), 1);
             }
@@ -668,7 +692,16 @@ namespace SpaceInvaders2017
                     {
                         playedBefore = true;
                         string readText = File.ReadAllText(path);
-                        highScore = Int32.Parse(readText);
+                        try
+                        {
+                            highScore = Int32.Parse(readText);
+                        }
+                        catch
+                        {
+                            File.WriteAllText(path, "0");
+                            readText = File.ReadAllText(path);
+                            highScore = Int32.Parse(readText);
+                        }
                         //MessageBox.Show(highScore.ToString());
                     }
                     break;
@@ -847,6 +880,7 @@ namespace SpaceInvaders2017
             switch (a)
             {
                 case 0:
+                    laserOwned = true;
                     specialFireHelper2 = true;
                     specialFireCounter = 0;
                     powerUpTextHelper = false;
@@ -858,7 +892,7 @@ namespace SpaceInvaders2017
                     specialFireCounter++;
                     powerUpTextHelper = true;
 
-                    if (specialFireCounter < 21)
+                    if (specialFireCounter < 11)
                     {
                         specialFire(1);
                     }
@@ -1061,17 +1095,21 @@ namespace SpaceInvaders2017
 
                 switch (powerUp.Tag.ToString())
                 {
-                    case "bomb":
-
-                        break;
                     case "health":
-                        playerHealth = playerAllowedHealth;
+                        playerHealth += 2;
+                        if (playerHealth > playerAllowedHealth) playerHealth = playerAllowedHealth;
                         updateplayerHealthBar();
                         screenFlash(0, 1, "");
                         break;
                     case "laser":
                         specialFire(0);
                         setText("PRESS B TO FIRE LASER", 1);
+                        break;
+                    case "stun":
+                        tmrStun.Enabled = false;
+                        tmrStun.Enabled = true;
+                        tmrSlow.Enabled = false;
+                        tmrMove.Enabled = false;
                         break;
                 }
 
