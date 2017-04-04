@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="SpaceInvaders2017.exe" size="185856">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="SpaceInvaders2017.exe" size="2398208">
       <assemblyIdentity name="SpaceInvaders2017" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>9Pl4JLBYR4BN8fKZYiACU5/MvRioQ7y0a4iIoENQD2Y=</dsig:DigestValue>
+        <dsig:DigestValue>X5We5epJIyFDf95VkAE5vzXUVBQAfIh/7UQCnmuFECM=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -60,15 +60,6 @@
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
       <dsig:DigestValue>AQM7kTe/ITmXn53CuYM4KmLnQCcAFc9IQ5Od5dgeW0w=</dsig:DigestValue>
-    </hash>
-  </file>
-  <file name="sound\gameMusic.mp3" size="2070694">
-    <hash>
-      <dsig:Transforms>
-        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
-      </dsig:Transforms>
-      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>pAF4iYY1H47yKajGJszE2+44omHddj21m210c4eyIL4=</dsig:DigestValue>
     </hash>
   </file>
   <file name="SpaceInvaders2017.exe.config" size="189">

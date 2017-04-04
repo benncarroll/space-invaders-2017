@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Media;
 using System.Windows.Media;
+using System.Threading;
 using System.IO;
 
 #pragma warning disable CS0252
@@ -27,6 +28,7 @@ namespace SpaceInvaders2017
 
         List<PictureBox> arrAliens = new List<PictureBox>();
         List<PictureBox> arrBullets = new List<PictureBox>();
+        List<Control> toBeHidden = new List<Control>();
 
         bool moveDir = true;
         bool finished = false;
@@ -37,11 +39,11 @@ namespace SpaceInvaders2017
         bool noWaveDupe = false;
         bool allowUpdate = true;
         bool pwrUsed = false;
-        bool specialFireHelper = false;
-        bool specialFireHelper2 = false;
+        bool laserFireHelper = false;
+        bool laserFireHelper2 = false;
         bool powerUpTextHelper = false;
         bool playedBefore = false;
-        bool laserOwned = false;
+        bool tmrTFH = false;
 
         int highScore = 0;
         int playerHealth = 5;
@@ -56,12 +58,13 @@ namespace SpaceInvaders2017
         int bulletcount = 0;
         int allowedBulletCount = 5;
         int stretchSpeed = 2;
-        int specialFireCounter = 0;
+        int laserFireCounter = 0;
         int playerScore = 0;
 
         PictureBox ship = new PictureBox();
         PictureBox playerHealthBar = new PictureBox();
         PictureBox powerUp = new PictureBox();
+        PictureBox instructionsBox = new PictureBox();
 
         Random r = new Random();
         KeyPressEventArgs checkKeysHelper = new KeyPressEventArgs((char)1);
@@ -107,21 +110,10 @@ namespace SpaceInvaders2017
             if (checkKeys("O") || checkKeys("o"))
             {
                 toggleDebug();
-                fileHandler(0);
-
             }
             if (checkKeys("q") || checkKeys("Q"))
             {
                 stretchSpeed = 5;
-            }
-            if (checkKeys("b") || checkKeys("B"))
-            {
-                if (specialFireHelper2)
-                {
-                    powerUpTextHelper = true;
-                    specialFireHelper = true;
-                    specialFireHelper2 = false;
-                }
             }
         }
         private void Form1_KeyDown(object sender, KeyEventArgs e)
@@ -134,6 +126,16 @@ namespace SpaceInvaders2017
             {
                 shipDir = 10;
             }
+            if (e.KeyCode == Keys.Up)
+            {
+                if (laserFireHelper2)
+                {
+                    powerUpTextHelper = true;
+                    laserFireHelper = true;
+                    laserFireHelper2 = false;
+                }
+            }
+
 
             if (e.KeyCode == Keys.Escape)
             {
@@ -141,7 +143,16 @@ namespace SpaceInvaders2017
                 gameOver();
                 tmrPowerUp.Enabled = false;
                 statusLabel.Dispose();
-                setText("YOU SCORED " + savedScore + " POINTS.\n\nTHANKS FOR PLAYING", 0);
+                if (started)
+                {
+                    setText("YOU SCORED " + savedScore + " POINTS.\n\nTHANKS FOR PLAYING\n\n\n\nHUGE CREDIT TO THE FOLLOWING\nFOR LOTS OF HELP:\n\nPETER HOWSE, MARCUS KAROZIS,\nSTACK OVERFLOW, MSDN", 0);
+                    tmrTextFlash.Enabled = false;
+                    tmrClose.Interval = 8000;
+                }
+                else if (!started)
+                {
+                    setText("LEAVING SO SOON?", 0);
+                }
                 tmrClose.Enabled = true;
             }
 
@@ -157,7 +168,7 @@ namespace SpaceInvaders2017
         {
             if (!msg.HWnd.Equals(Handle) &&
                 (keyData == Keys.Left || keyData == Keys.Right ||
-                 keyData == Keys.Up || keyData == Keys.Down || 
+                 keyData == Keys.Up || keyData == Keys.Down ||
                  keyData == Keys.Space || keyData == Keys.Escape))
                 return true;
             return base.ProcessCmdKey(ref msg, keyData);
@@ -169,6 +180,7 @@ namespace SpaceInvaders2017
         private void Form1_Load(object sender, EventArgs e)
         {
             fileHandler(0);
+            fileHandler(3);
 
             this.Size = new Size(550, 0);
 
@@ -176,9 +188,8 @@ namespace SpaceInvaders2017
             scWidth = Screen.FromControl(this).Bounds.Width;
 
             powerUp.Visible = false;
-            //    "pack://application:,,,/Resources/default1.mp3"
-            //    "C:\\Users\\Ben Carroll\\BitBucket\\Ben's Space Invaders\\SpaceInvaders2017\\sound\\gameMusic.mp3"
-            backgroundMusic.Open(new Uri("C:\\Users\\Ben Carroll\\BitBucket\\Ben's Space Invaders\\SpaceInvaders2017\\sound\\gameMusic.mp3  "));
+
+            backgroundMusic.Open(new System.Uri("C:\\Users\\Public\\Documents\\SpaceInvaders\\gameMusic.mp3"));
             backgroundMusic.MediaEnded += new EventHandler(Media_Ended);
             backgroundMusic.Play();
             backgroundMusic.SpeedRatio = 1;
@@ -202,7 +213,7 @@ namespace SpaceInvaders2017
 
         // These functions are called when a home screen button is clicked
         // and set game variables based on difiiculty.
-        private void buttonBeginner_Click(object sender, EventArgs e)
+        private void buttonNormal_Click(object sender, EventArgs e)
         {
             allowedBulletCount = 3;
             playerAllowedHealth = 5;
@@ -220,8 +231,14 @@ namespace SpaceInvaders2017
         }
         private void buttonInstructions_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("CONTROLS:\n\nMOVE SHIP:      ←  →\nFIRE:                   SPACE\nFIRE LASER:       B");
+            showInstructions(0);
+            buttonInstructions.Font = new Font(buttonInstructions.Font, FontStyle.Regular);
+            playedBefore = true;
             this.Focus();
+        }
+        private void instructionsBox_Click(object sender, EventArgs e)
+        {
+            showInstructions(1);
         }
 
 
@@ -440,7 +457,7 @@ namespace SpaceInvaders2017
 
             switch (type)
             {
-                case 0:                 
+                case 0:
                     powerUp.Image = SpaceInvaders2017.Properties.Resources.stun;
                     powerUp.Tag = "stun";
                     break;
@@ -487,7 +504,7 @@ namespace SpaceInvaders2017
             deleteDead();
             updatePlayerScore();
             checkEndGame();
-            if (specialFireHelper) specialFire(2);
+            if (laserFireHelper) laserFire(2);
         }
         private void tmrPowerUp_Tick(object sender, EventArgs e)
         {
@@ -498,6 +515,7 @@ namespace SpaceInvaders2017
             if (displayText.Visible && flasherHelper > 1)
             {
                 displayText.Visible = false;
+                instructionsBox.Visible = false;
                 buttonInstructions.BackColor = System.Drawing.Color.Black;
 
 
@@ -527,7 +545,7 @@ namespace SpaceInvaders2017
         {
             logoBox.Top -= 5;
             buttonExpert.Top -= 10;
-            buttonBeginner.Top -= 10;
+            buttonNormal.Top -= 10;
             buttonInstructions.Top -= 10;
             this.Focus();
 
@@ -535,13 +553,14 @@ namespace SpaceInvaders2017
             {
                 logoBox.Visible = false;
                 logoBox.Enabled = false;
-                tmrLogoAnimation.Enabled = false;
             }
-            if (buttonBeginner.Top + 40 < 0)
+            if (buttonNormal.Top + 40 < 0)
             {
                 Controls.Remove(buttonExpert);
-                Controls.Remove(buttonBeginner);
+                Controls.Remove(buttonNormal);
                 Controls.Remove(buttonInstructions);
+                Controls.Remove(logoBox);
+                tmrLogoAnimation.Enabled = false;
                 powerUpTextHelper = true;
             }
         }
@@ -562,14 +581,14 @@ namespace SpaceInvaders2017
                 this.Location = new Point(scWidth / 2 - this.Width / 2, scHeight / 2 - this.Height / 2);
             }
 
-            if (this.Height > 400)
+            if (this.Height > 400 && this.Height < 450)
             {
                 if (!started)
                 {
                     setText("WELCOME TO SPACE INVADERS\n\nSELECT A BUTTON:", 0);
                 }
 
-                buttonBeginner.Top = scHeight / 2 + 75;
+                buttonNormal.Top = scHeight / 2 + 75;
                 buttonExpert.Top = scHeight / 2 + 75;
                 buttonInstructions.Top = scHeight / 2 + 75;
 
@@ -578,19 +597,22 @@ namespace SpaceInvaders2017
                 powerUpTextHelper = false;
 
                 buttonExpert.Enabled = true;
-                buttonBeginner.Enabled = true;
+                buttonNormal.Enabled = true;
                 buttonInstructions.Enabled = true;
             }
             if (this.Height > scHeight - 1 && this.Width > scWidth - 1)
             {
                 tmrWindowAnimation.Enabled = false;
                 buttonExpert.Enabled = true;
-                buttonBeginner.Enabled = true;
+                buttonNormal.Enabled = true;
                 buttonInstructions.Enabled = true;
+
                 this.Top = scHeight / 2 - this.Height / 2;
                 this.Location = new Point(0, 0);
+
                 this.FormBorderStyle = FormBorderStyle.None;
                 this.WindowState = FormWindowState.Maximized;
+                this.TopMost = false;
 
             }
         }
@@ -607,6 +629,11 @@ namespace SpaceInvaders2017
             tmrMove.Enabled = true;
             tmrSlow.Enabled = true;
         }
+        private void tmrInstructions_Tick(object sender, EventArgs e)
+        {
+            showInstructions(1);
+        }
+
 
         //------------------------------------------------------------------------
         //--------------------- Updating Functions -------------------------------
@@ -678,9 +705,9 @@ namespace SpaceInvaders2017
         // 2 = Creates file
         private void fileHandler(int a)
         {
-            Console.WriteLine(buttonInstructions.Font.ToString());
             string path = "C:\\Users\\Public\\Documents\\SpaceInvaders\\data.txt";
             string path2 = "C:\\Users\\Public\\Documents\\SpaceInvaders\\";
+            string path3 = "C:\\Users\\Public\\Documents\\SpaceInvaders\\gameMusic.mp3";
             switch (a)
             {
                 case 0:
@@ -710,10 +737,13 @@ namespace SpaceInvaders2017
                     break;
                 case 2:
                     playedBefore = false;
-                    buttonInstructions.Font = new Font(buttonInstructions.Font, FontStyle.Bold); ;
+                    buttonInstructions.Font = new Font(buttonInstructions.Font, FontStyle.Bold);
                     string fileText = "0";
                     Directory.CreateDirectory(path2);
                     File.WriteAllText(path, fileText);
+                    break;
+                case 3:
+                    File.WriteAllBytes(path3, SpaceInvaders2017.Properties.Resources.gameMusic);
                     break;
             }
         }
@@ -875,33 +905,75 @@ namespace SpaceInvaders2017
         }
 
         // Used with Laser powerup.
-        private void specialFire(int a)
+        private void laserFire(int a)
         {
             switch (a)
             {
                 case 0:
-                    laserOwned = true;
-                    specialFireHelper2 = true;
-                    specialFireCounter = 0;
+                    laserFireHelper2 = true;
+                    laserFireCounter = 0;
                     powerUpTextHelper = false;
                     break;
                 case 1:
                     createBullet(1);
                     break;
                 case 2:
-                    specialFireCounter++;
+                    laserFireCounter++;
                     powerUpTextHelper = true;
 
-                    if (specialFireCounter < 11)
+                    if (laserFireCounter < 11)
                     {
-                        specialFire(1);
+                        laserFire(1);
                     }
                     else
                     {
-                        specialFireHelper = false;
+                        laserFireHelper = false;
                     }
                     break;
             }
+        }
+
+        // Used to bring up the instructions screen.
+        private void showInstructions(int mode)
+        {
+            switch (mode)
+            {
+                case 0:
+
+                    foreach (Control a in Controls)
+                    {
+                        if (a.Visible && a.Enabled)
+                        {
+                            toBeHidden.Add(a);
+                            a.Visible = false;
+                        }
+                    }
+                    if (tmrTextFlash.Enabled) tmrTFH = true;
+                    tmrTextFlash.Enabled = false;
+                    instructionsBox.Visible = true;
+
+                    // Generates instructionsBox
+                    instructionsBox.Size = new Size(800, 500);
+                    instructionsBox.BackColor = System.Drawing.Color.Black;
+                    instructionsBox.Image = SpaceInvaders2017.Properties.Resources.instructionsBox;
+                    instructionsBox.Name = "instructionsBox";
+                    instructionsBox.Location = new Point(scWidth / 2 - 400, scHeight / 2 - 250);
+                    Controls.Add(instructionsBox);
+                    instructionsBox.Click += new System.EventHandler(this.instructionsBox_Click);
+
+                    tmrInstructions.Enabled = true;
+
+                    break;
+                case 1:
+                    foreach (Control a in toBeHidden)
+                    {
+                        a.Visible = true;
+                    }
+                    if (tmrTFH) tmrTextFlash.Enabled = true;
+                    Controls.Remove(instructionsBox);
+                    break;
+            }
+
         }
 
         //------------------------------------------------------------------------
@@ -1102,8 +1174,8 @@ namespace SpaceInvaders2017
                         screenFlash(0, 1, "");
                         break;
                     case "laser":
-                        specialFire(0);
-                        setText("PRESS B TO FIRE LASER", 1);
+                        laserFire(0);
+                        setText("PRESS UP TO FIRE LASER", 1);
                         break;
                     case "stun":
                         tmrStun.Enabled = false;

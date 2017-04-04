@@ -11,4 +11,3 @@ C:\Users\Ben Carroll\BitBucket\Ben's Space Invaders\SpaceInvaders2017\obj\Releas
 C:\Users\Ben Carroll\BitBucket\Ben's Space Invaders\SpaceInvaders2017\obj\Release\SpaceInvaders2017.application
 C:\Users\Ben Carroll\BitBucket\Ben's Space Invaders\SpaceInvaders2017\obj\Release\SpaceInvaders2017.exe
 C:\Users\Ben Carroll\BitBucket\Ben's Space Invaders\SpaceInvaders2017\obj\Release\SpaceInvaders2017.pdb
-C:\Users\Ben Carroll\BitBucket\Ben's Space Invaders\SpaceInvaders2017\obj\Release\SpaceInvaders2017.csprojResolveAssemblyReference.cache

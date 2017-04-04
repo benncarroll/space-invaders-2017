@@ -128,7 +128,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="img\gameicons\stun.png" />
-    <Content Include="sound\gameMusic.mp3" />
+    <None Include="img\interface\instructions.png" />
     <None Include="Resources\saucer2b.ico" />
     <None Include="img\gameicons\alienicon.png" />
     <None Include="img\gameicons\alien.png" />
@@ -146,6 +146,7 @@
     <None Include="sound\shoot.wav" />
     <None Include="sound\hit.wav" />
     <None Include="sound\death.wav" />
+    <None Include="sound\gameMusic.mp3" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -100,6 +100,16 @@ namespace SpaceInvaders2017.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] gameMusic {
+            get {
+                object obj = ResourceManager.GetObject("gameMusic", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap health {
@@ -115,6 +125,16 @@ namespace SpaceInvaders2017.Properties {
         internal static System.IO.UnmanagedMemoryStream hit {
             get {
                 return ResourceManager.GetStream("hit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap instructionsBox {
+            get {
+                object obj = ResourceManager.GetObject("instructionsBox", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
