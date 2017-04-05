@@ -50,6 +50,7 @@
             this.tmrClose = new System.Windows.Forms.Timer(this.components);
             this.tmrStun = new System.Windows.Forms.Timer(this.components);
             this.tmrInstructions = new System.Windows.Forms.Timer(this.components);
+            this.tmrAllowKeys = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.logoBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -231,6 +232,11 @@
             this.tmrInstructions.Interval = 20000;
             this.tmrInstructions.Tick += new System.EventHandler(this.tmrInstructions_Tick);
             // 
+            // tmrAllowKeys
+            // 
+            this.tmrAllowKeys.Interval = 500;
+            this.tmrAllowKeys.Tick += new System.EventHandler(this.tmrAllowKeys_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -283,6 +289,7 @@
         private System.Windows.Forms.Timer tmrClose;
         private System.Windows.Forms.Timer tmrStun;
         private System.Windows.Forms.Timer tmrInstructions;
+        private System.Windows.Forms.Timer tmrAllowKeys;
     }
 }
 

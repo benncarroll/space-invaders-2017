@@ -3,7 +3,7 @@
 ### This is a version of Space Invaders, made in C# ###
 
 * It has aliens, a ship, bullets, collision detection, scoring and increasingly harder levels.
-* Version 1.0!!!
+* Version 1.0.1!!!
 
 ### How to play ###
 

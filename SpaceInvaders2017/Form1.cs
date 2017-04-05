@@ -44,6 +44,9 @@ namespace SpaceInvaders2017
         bool powerUpTextHelper = false;
         bool playedBefore = false;
         bool tmrTFH = false;
+        bool escapeSeq = false;
+        bool endRoundHelper = false;
+        bool allowKeys = false;
 
         int highScore = 0;
         int playerHealth = 5;
@@ -70,16 +73,12 @@ namespace SpaceInvaders2017
         KeyPressEventArgs checkKeysHelper = new KeyPressEventArgs((char)1);
         MediaPlayer backgroundMusic = new MediaPlayer();
 
-
-
         //------------------------------------------------------------------------
         //----------------------- Event Listeners --------------------------------
         //------------------------------------------------------------------------
 
-
         public Form1()
         {
-
             InitializeComponent();
             this.Click += Form1_Click;
             this.KeyPress += Form1_KeyPress;
@@ -97,27 +96,32 @@ namespace SpaceInvaders2017
             {
                 createBullet(0);
             }
-
-            if (checkKeys("n") || checkKeys("N") && finished && !playerdied && started)
-            {
-                newWave();
-            }
-            if (checkKeys("r") || checkKeys("R") && finished && playerdied && started)
-            {
-                newWave();
-                playerdied = false;
-            }
             if (checkKeys("O") || checkKeys("o"))
             {
                 toggleDebug();
             }
             if (checkKeys("q") || checkKeys("Q"))
             {
-                stretchSpeed = 5;
+                stretchSpeed += 5;
             }
         }
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
+            if (finished && started && !escapeSeq && allowKeys)
+            {
+                // erh true = newWave, false = gameOver
+                if (endRoundHelper)
+                {
+                    newWave();
+                }
+                else
+                {
+                    newWave();
+                    playerdied = false;
+                }
+                allowKeys = false;
+            }
+
             if (e.KeyCode == Keys.Left)
             {
                 shipDir = -10;
@@ -139,6 +143,8 @@ namespace SpaceInvaders2017
 
             if (e.KeyCode == Keys.Escape)
             {
+                if (escapeSeq) this.Close();
+                escapeSeq = true;
                 string savedScore = playerScore.ToString();
                 gameOver();
                 tmrPowerUp.Enabled = false;
@@ -239,6 +245,7 @@ namespace SpaceInvaders2017
         private void instructionsBox_Click(object sender, EventArgs e)
         {
             showInstructions(1);
+            tmrInstructions.Enabled = false;
         }
 
 
@@ -281,6 +288,8 @@ namespace SpaceInvaders2017
                 shipDir = 0;
                 tmrMove.Interval = 100;
                 ship.Location = new Point(this.Width / 2, this.Height - 100);
+                tmrPowerUp.Enabled = true;
+
 
                 playerHealth = playerAllowedHealth;
                 updateplayerHealthBar();
@@ -632,7 +641,14 @@ namespace SpaceInvaders2017
         private void tmrInstructions_Tick(object sender, EventArgs e)
         {
             showInstructions(1);
+            tmrInstructions.Enabled = false;
         }
+        private void tmrAllowKeys_Tick(object sender, EventArgs e)
+        {
+            allowKeys = true;
+            tmrAllowKeys.Enabled = false;
+        }
+
 
 
         //------------------------------------------------------------------------
@@ -690,7 +706,7 @@ namespace SpaceInvaders2017
         {
             if (powerUpTextHelper)
             {
-                setText("SCORE: " + playerScore.ToString(), 1);
+                setText("SCORE: " + playerScore.ToString() + "  WAVE: " + waveNumber.ToString(), 1);
             }
         }
 
@@ -758,8 +774,10 @@ namespace SpaceInvaders2017
                 case 0:
                     elementId = displayText;
                     powerUp.Visible = false;
+                    tmrPowerUp.Enabled = false;
                     tmrTextFlash.Enabled = true;
                     ship.Visible = false;
+                    tmrAllowKeys.Enabled = true;
                     playerHealthBar.Visible = false;
                     break;
                 case 1:
@@ -1241,7 +1259,7 @@ namespace SpaceInvaders2017
             // Checks number of aliens and that game is not finished
             if (arrAliens.Count < 1 && !finished)
             {
-
+                endRoundHelper = true;
                 finished = true;
 
                 // Adds to alien count for next level
@@ -1249,7 +1267,7 @@ namespace SpaceInvaders2017
                 if (ay < 10) ay++;
 
                 // Displays text
-                setText("PRESS N TO START NEXT WAVE\n\nINVADERS: " + (ax * ay), 0);
+                setText("PRESS ANY KEY TO START NEXT WAVE\n\nINVADERS: " + (ax * ay), 0);
 
                 clearScreen();
             }
@@ -1296,7 +1314,7 @@ namespace SpaceInvaders2017
         // These function is called to end a game.
         private void gameOver()
         {
-
+            endRoundHelper = false;
             finished = true;
             playerdied = true;
             playerHealth = playerAllowedHealth;
@@ -1307,7 +1325,7 @@ namespace SpaceInvaders2017
             if (arrAliens.Count < 6) smartSentence = "ONLY ";
 
             // Displays text
-            setText("GAME OVER. YOU " + smartSentence + "HAD " + arrAliens.Count.ToString() + " LEFT TO KILL.\n\nYOU GOT TO ROUND " + waveNumber.ToString() + " WITH A SCORE OF " + playerScore.ToString() + ".\n\nPRESS R TO RESTART.", 0);
+            setText("GAME OVER. YOU " + smartSentence + "HAD " + arrAliens.Count.ToString() + " LEFT TO KILL.\n\nYOU GOT TO ROUND " + waveNumber.ToString() + " WITH A SCORE OF " + playerScore.ToString() + ".\n\nPRESS ANY KEY TO RESTART.", 0);
 
             clearScreen();
             if (playerScore > highScore) highScore = playerScore;
