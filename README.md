@@ -15,4 +15,4 @@
 
 ### Suggestions/Comments ###
 
-* If you have any ideas, comments, or anything else you'd like to share about the game, feel free to email me at [ben.carroll@student.tsc.nsw.edu.au](mailto:ben.carroll@student.tsc.nsw.edu.au?subject=Suggestions%20for%20Space%20Invaders!)
+* If you have any ideas, comments, or anything else you'd like to share about the game, feel free to message me or start a pull request!
